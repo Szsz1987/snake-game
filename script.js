@@ -18,7 +18,6 @@ function draw() {
     drawSnake();
     drawFood();
 }
-
 // Draw snake 
 function drawSnake() {
     snake.forEach((segment) => {
@@ -27,30 +26,25 @@ function drawSnake() {
         board.appendChild(snakeElement);
     })
 }
-
 // Create a snake or food cube/div
 function createGameElement(tag, className) {
     const element = document.createElement(tag);
     element.className = className;
     return element;
 } 
-
 // Set the position of snake or food 
 function setPosition(element, position) {
     element.style.gridColumn = position.x;
     element.style.gridRow = position.y;
 }
-
 // Testing draw function 
 // draw();
-
 // Draw food function 
 function drawFood() {
     const foodElement = createGameElement('div', 'food');
     setPosition(foodElement, food)
     board.appendChild(foodElement);
 }
-
 // Generate food  
 function generateFood() {
     const x = Math.floor(Math.random() * gridSize) + 1;
@@ -81,9 +75,11 @@ function move() {
 
     if (head.x === food.x && head.y === food.y) {
         food = generateFood();
-        clearInterval(); // clear past interval
+        increaseSpeed();
+        clearInterval(gameInterval); // clear past interval
         gameInterval = setInterval(() => {
             move();
+            // checkCollision();
             draw();
         }, gameSpeedDelay);
     } else {
@@ -91,10 +87,10 @@ function move() {
     }
 }
 
-// // Test moving
+// Test moving
 // setInterval(() => {
-//     move(); // move first
-//     draw(); // then draw again new position
+// move(); // move first
+// draw(); // then draw again new position
 // }, 200);
 
 // Start game function
@@ -135,3 +131,16 @@ function handleKeyPress(event) {
 }
 
 document.addEventListener('keydown', handleKeyPress);
+
+function increaseSpeed() {
+    console.log(gameSpeedDelay);
+    if (gameSpeedDelay > 150) {
+        gameSpeedDelay -= 5;
+    } else if (gameSpeedDelay > 100) {
+        gameSpeedDelay -= 3;
+    } else if (gameSpeedDelay > 50) {
+        gameSpeedDelay -= 2;
+    } else if (gameSpeedDelay > 25) {
+        gameSpeedDelay -= 1;
+    }
+}
