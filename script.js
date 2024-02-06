@@ -2,6 +2,7 @@
 const board = document.getElementById('game-board');
 const instructionText = document.getElementById('instruction-text');
 const logo = document.getElementById('logo');
+const score = document.getElementById('score'); 
 
 // Define game variables
 const gridSize = 20;
@@ -17,6 +18,7 @@ function draw() {
     board.innerHTML = '';
     drawSnake();
     drawFood();
+    updateScore();
 }
 // Draw snake 
 function drawSnake() {
@@ -79,7 +81,7 @@ function move() {
         clearInterval(gameInterval); // clear past interval
         gameInterval = setInterval(() => {
             move();
-            // checkCollision();
+            checkCollision();
             draw();
         }, gameSpeedDelay);
     } else {
@@ -100,7 +102,7 @@ function startGame() {
     logo.style.display = 'none'; 
     gameInterval = setInterval(() => {
         move();
-        // checkCollision();
+        checkCollision();
         draw();
     }, gameSpeedDelay);
 }
@@ -157,4 +159,17 @@ function checkCollision() {
             resetGame();
         }
     }
+}
+
+function resetGame() {
+    snake = [{ x: 10, y: 10}];
+    food = generateFood();
+    direction = 'right';
+    gameSpeedDelay = 200;
+    updateScore();
+}
+
+function updateScore() {
+    const currentScore = snake.length - 1;
+    score.textContent = currentScore.toString().padStart(3, '0');
 }
